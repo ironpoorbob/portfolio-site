@@ -1,0 +1,55 @@
+---
+title: "MAB Testing Accelerator"
+role: "Lead Developer / Sole Creator"
+year: 2025
+duration: "1 month (August)"
+teamSize: "1 (Independent Tooling)"
+outcomeSummary: "Eliminated the high-friction CMS/CDN workflow for asset validation, allowing designers and product owners to preview high-stakes MAB variants in seconds."
+overview: "Developed a custom Chrome Extension to bypass the multi-step CMS publication cycle for homepage banners. By injecting real-time style overrides and asset swaps directly into the browser, the tool enabled instant validation of image crops, copy placement, and CTA alignment before any content was committed to the production pipeline."
+
+problem: "Setting up a Multi-Arm Bandit (MAB) test with 12-14 variants required a high-friction, manual workflow. Between managing multiple image crops and complex metadata in the CMS, the process was easily prone to errors that could only be caught after a lengthy publication and CDN propagation cycle. This made it difficult for teams to iterate quickly on high-stakes homepage content."
+
+constraints:
+  - "Multi-Device Support: The tool had to accurately handle various screen resolutions and device breakpoints by mapping multiple image sizings/crops to their specific CSS media queries."
+  - "Targeted Asset Swapping: It had to identify specific element IDs on the page to ensure new test images were inserted into the appropriate component background without affecting the rest of the site's layout."
+  - "Non-Invasive Architecture: The solution had to function as an external utility, allowing for a \"live preview\" of assets already processed by the CMS without requiring any changes or hooks within the production codebase."
+
+approach: "I identified that the primary bottleneck was the set up time between receiving assets and design/stakeholder sign off. I built a Chrome Extension that identifies the unique style blocks used by the homepage Hero component. The extension provides a UI to input a CDN image base path and then programmatically rewrites the media queries in the browser's DOM. This allows for 'live prototyping' of any image asset instantly."
+
+keyDecisions:
+  - decision: "Dynamic Style Block Updates"
+    reasoning: "The homepage uses unique style IDs for each hero instance. I engineered the extension to scrape these IDs and rewrite the background-url properties across all media queries, ensuring the preview matched production behavior exactly."
+  - decision: "In-Browser UI Controls"
+    reasoning: "I added toggles for background-position (center, top, etc.) and CTA alignment (left vs. right). This allowed designers to finalize the exact 'backing doc' values they needed before ever touching the CMS."
+  - decision: "ROI & Efficiency Documentation"
+    reasoning: "To justify the development of an internal tool, I conducted a spike and risk assessment to estimate potential time savings. By documenting the current manual bottlenecks, I was able to demonstrate that the extension would save 2–4 hours of developer time per test, providing a clear ROI for the effort."
+
+techStack:
+  - "JavaScript (Chrome Extension API)"
+  - "CSS"
+  - "DOM Manipulation"
+  - "WCM/CDN Architecture"
+
+impact:
+  metrics:
+    - label: "Validation Time"
+      value: "Reduced from hours to minutes"
+    - label: "Team Adoption"
+      value: "Utilized by Design and Product teams for MAB test validation"
+    - label: "Efficiency"
+      value: "Eliminated redundant CMS publication cycles"
+  qualitative: "This tool turned a high-friction engineering task into a self-service design process. By empowering designers to test their own assets in a live environment, we removed engineering as the middleman for visual QA."
+
+learnings:
+  - "Internal tooling is often the highest-leverage work an engineer can do to speed up the process and allow developers to work on important feature work."
+  - "Internal tools don't need to be complex to be high-impact; sometimes a simple browser utility is the most effective way to bypass a massive platform bottleneck"
+  - "Small, scoped tools (like an extension) can solve enterprise-level bottlenecks without requiring backend refactoring."
+
+featured: true
+status: completed
+order: 2
+---
+
+### The Impact
+
+The Chrome Extension streamlined a high-friction workflow by allowing teams to verify production-ready assets before finalizing a test configuration. Once images were uploaded and processed by the CMS, the tool enabled a "live" preview of the compression quality and crops directly on the homepage. By catching sizing and quality issues at the start of the process—rather than after a full deployment—we eliminated the need for costly rework. This resulted in an estimated savings of 2–4 hours of developer time per test and gave the Design and Product teams the autonomy to iterate with confidence.

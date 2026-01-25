@@ -1,0 +1,185 @@
+---
+/**
+ * Contact Page
+ * 
+ * Minimal, intentional contact page with clear visual hierarchy and zone-based layout.
+ * Prioritizes email as the primary contact method while providing secondary social links.
+ * 
+ * Layout Structure:
+ * - Zone 1 (Primary): Email address with context about response time
+ * - Zone 2 (Secondary): Social media links (only shown if configured)
+ * 
+ * Features:
+ * - Clean, distraction-free design
+ * - Large, prominent email link
+ * - Automatic filtering of configured social links
+ * - Responsive layout
+ * - Clear visual hierarchy
+ * 
+ * Route: /contact
+ * 
+ * @page
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SEO from '../components/SEO.astro';
+import { siteConfig } from '../config';
+import { pagesConfig } from '../pages.config';
+
+/**
+ * Filters and formats social links from site configuration
+ * 
+ * Only includes platforms that have a URL configured (non-empty values).
+ * Capitalizes platform names for display (e.g., "github" becomes "Github").
+ * 
+ * @returns Array of social link objects with platform name and URL
+ */
+// const socialLinks = Object.entries(siteConfig.social)
+//   .filter(([_, url]) => url)
+//   .map(([platform, url]) => ({
+//     platform: platform.charAt(0).toUpperCase() + platform.slice(1),
+//     url
+//   }));
+---
+
+<script>
+  const copyBtn = document.getElementById('copy-btn');
+  // const email = "{siteConfig.author.email}"; // Astro will inject this
+  // console.log('email::: ', email);
+  const email = copyBtn?.getAttribute('data-email') ?? '';
+
+  copyBtn?.addEventListener('click', () => {
+    navigator.clipboard.writeText(email);
+    copyBtn.innerText = "Copied!";
+    setTimeout(() => { copyBtn.innerText = "Copy"; }, 2000);
+  });
+</script>
+
+
+<BaseLayout>
+  <SEO 
+    slot="head"
+    title={pagesConfig.contact.title}
+    description={pagesConfig.contact.description}
+    type="website"
+  />
+
+  <main class="contact-page">
+    <!-- Zone 1: Primary Intent -->
+    <section class="primary-zone">
+      <h1>{pagesConfig.contact.heading}</h1>
+      <a href={`mailto:${siteConfig.author.email}`} class="email-link">
+        {siteConfig.author.email}
+      </a>
+      <button id="copy-btn" class="copy-badge" data-email={siteConfig.author.email}>Copy</button>
+      <p class="context">
+        I’m currently open to new opportunities to help teams solve complex technical challenges. I usually respond within 24 hours—you can also find me on <a href="https://www.linkedin.com/in/bob-conlon-44a6184a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
+      </p>
+    </section>
+
+   
+  </main>
+
+  <style>
+    .contact-page {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 8rem;
+    }
+
+    .primary-zone {
+      margin-bottom: 3rem;
+    }
+
+    .primary-zone h1 {
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.01em;
+    }
+
+    .email-link {
+      display: block;
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      font-weight: 600;
+      color: var(--color-text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      transition: color 0.2s ease;
+    }
+
+    .email-link:hover {
+      color: var(--color-text-secondary);
+    }
+
+    .context {
+      font-size: 1rem;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    .secondary-zone {
+      padding-top: 3rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .secondary-zone h2 {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .social-links a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.2s ease;
+    }
+
+    .social-links a:hover {
+      color: var(--color-text);
+    }
+
+    .separator {
+      color: var(--color-text-muted);
+      user-select: none;
+    }
+
+    @media (max-width: 640px) {
+      .contact-page {
+        padding: 4rem 1rem 6rem;
+      }
+
+      .primary-zone {
+        margin-bottom: 4rem;
+      }
+
+      .primary-zone h1 {
+        font-size: 1rem;
+      }
+    }
+
+    #copy-btn {
+      background-color: var(--color-accent);
+      color: var(--color-text);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+    }
+    
+  </style>
+</BaseLayout>

@@ -1,0 +1,213 @@
+---
+/**
+ * About Page
+ * 
+ * A short history of my past experiences as a developer
+ * 
+ * 
+ * Route: /about
+ * 
+ * @page
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SEO from '../components/SEO.astro';
+import { getCollection } from 'astro:content';
+import { pagesConfig } from '../pages.config';
+
+/**
+ * Queries all uses entries from the content collection
+ */
+const allAbout = await getCollection('about');
+const aboutData = allAbout[0]?.data;
+// const allUses = await getCollection('uses');
+
+/**
+ * Sorts uses entries by custom order field
+ * 
+ * Allows intentional curation of which tools/technologies are highlighted
+ * first within each category.
+ */
+// const sortedUses = allUses.sort((a, b) => a.data.order - b.data.order);
+
+/**
+ * Groups uses entries by category
+ * 
+ * Creates a record object where keys are category names (tools, stack, environment)
+ * and values are arrays of entries in that category. This enables category-based
+ * section organization in the UI.
+ * 
+ * @returns Record with category as key and array of entries as value
+ */
+// const groupedByCategory = sortedUses.reduce((acc, entry) => {
+//   const category = entry.data.category;
+//   if (!acc[category]) {
+//     acc[category] = [];
+//   }
+//   acc[category].push(entry);
+//   return acc;
+// }, {} as Record<string, typeof sortedUses>);
+
+/**
+ * Category metadata for display
+ * 
+ * Defines the title and description for each category section,
+ * providing context about what each category contains.
+ */
+// const categoryInfo = {
+//   tools: { title: 'Tools', description: 'Software and applications I use daily' },
+//   stack: { title: 'Tech Stack', description: 'Technologies and frameworks I work with' },
+//   environment: { title: 'Environment', description: 'Hardware and workspace setup' },
+// };
+
+/**
+ * Defines the display order for categories
+ * 
+ * Ensures categories appear in a logical progression: tools → stack → environment
+ */
+// const categoryOrder: Array<'tools' | 'stack' | 'environment'> = ['tools', 'stack', 'environment'];
+---
+
+<BaseLayout>
+  <SEO 
+    slot="head"
+    title={pagesConfig.about.title}
+    description={pagesConfig.about.description}
+    type="website"
+  />
+
+  <main class="page-container">
+    <header class="page-header">
+      <h1 class="page-title">{pagesConfig.about.heading}</h1>
+      <p class="page-intro">
+        {pagesConfig.about.intro}
+      </p>
+    </header>
+
+
+    {aboutData?.introductions && (
+      <section class="intro-section">
+        {aboutData.introductions.map((intro) => (
+          <div class="intro-block">
+            {intro.headline && <h2 class="intro-headline">{intro.headline}</h2>}
+            {intro.body.map((paragraph) => (
+              <p class="intro-body">{paragraph}</p>
+            ))}
+          </div>
+        ))}
+      </section>
+    )}
+
+    
+
+    
+  </main>
+
+  <style>
+    .intro-section {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .intro-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .intro-headline {
+      font-size: 1.75rem;
+      margin: 0;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .intro-body {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--color-text-secondary);
+      margin: 0;
+    }
+
+    .category-section {
+      margin-bottom: 4rem;
+    }
+
+    .category-section:last-of-type {
+      margin-bottom: 2rem;
+    }
+
+    .category-header {
+      margin-bottom: 2rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    .category-header h2 {
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .category-description {
+      font-size: 1rem;
+      color: var(--color-text-secondary);
+      margin: 0;
+    }
+
+    .items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .item-name {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .item-name a {
+      color: var(--color-text);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      transition: color 0.2s ease;
+    }
+
+    .item-name a:hover {
+      color: var(--color-accent);
+    }
+
+    .external-link-icon {
+      font-size: 0.875rem;
+      opacity: 0.6;
+    }
+
+    .item-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .category-header h2 {
+        font-size: 1.5rem;
+      }
+
+      .item-name {
+        font-size: 1.125rem;
+      }
+
+      .items-list {
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</BaseLayout>
