@@ -48,7 +48,7 @@ export const siteConfig = {
    * Should be the full production URL without trailing slash.
    * Example: 'https://example.com'
    */
-  url: getEnv('SITE_URL', 'https://www.bobconlon.com'),
+  url: getEnv('SITE_URL', 'http://www.bobconlon.com'),
   
   /**
    * Site language (ISO 639-1 code)
