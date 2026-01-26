@@ -1,7 +1,7 @@
 {
-  "name": "Professional Portfolio",
+  "name": "Bob Conlon's Web Developer Portfolio",
   "short_name": "Portfolio",
-  "description": "Engineering leader specializing in system architecture, technical decision-making, and delivering measurable business impact.",
+  "description": "Engineering leader focused on turning complex technical problems into maintainable solutions and high-efficiency workflows.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",
@@ -21,6 +21,18 @@
       "src": "/favicon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

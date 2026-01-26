@@ -71,7 +71,7 @@ export default defineConfig({
    * 
    * Set SITE_URL in your .env file (e.g., https://example.com)
    */
-  site: SITE_URL || 'https://www.bobconlon.com',
+  site: SITE_URL || 'http://www.bobconlon.com',
   
   /**
    * Environment variables schema (Astro v5+)
@@ -87,7 +87,7 @@ export default defineConfig({
   env: {
     schema: {
       // Site configuration
-      SITE_URL: envField.string({ context: 'client', access: 'public', default: 'https://www.bobconlon.com' }),
+      SITE_URL: envField.string({ context: 'client', access: 'public', default: 'http://www.bobconlon.com' }),
       SITE_LANGUAGE: envField.string({ context: 'client', access: 'public', default: 'en' }),
       SITE_TITLE: envField.string({ context: 'client', access: 'public', default: 'Web Development Portfolio' }),
       SITE_DESCRIPTION: envField.string({ context: 'client', access: 'public', default: 'Engineering leader focused on turning complex technical problems into maintainable solutions and high-efficiency workflows.' }),

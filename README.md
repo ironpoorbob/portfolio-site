@@ -1,3 +1,13 @@
+# Bob Conlon — Web Development Portfolio
+
+This is Bob Conlon's web development portfolio site, built with the Case Astro theme.
+
+Bob Conlon is a Lead Frontend Engineer focused on building practical solutions and workflows that solve real-world bottlenecks.
+
+You can reach him on LinkedIn here: https://www.linkedin.com/in/bob-conlon-44a6184a/
+
+---
+
 # Case — A Case-Study-First Portfolio Theme for Astro
 
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
