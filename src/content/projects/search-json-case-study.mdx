@@ -1,0 +1,68 @@
+
+---
+
+title: "Enterprise Search: Decoupled Rules Engine"
+role: "Tech Lead / Architect"
+year: 2024
+duration: "2-3 months"
+teamSize: "3 Devs (Lead + 2)"
+outcomeSummary: "Enabled instant content updates via CMS, bypassing CI/CD bottleneck and driving measurable lift in user conversions (NABs)."
+overview: "Architected a 'Rules Engine' that decoupled business data from the application logic. By moving the mapping of search terms and component triggers into a CDN-hosted JSON configuration, the Angular frontend became a dynamic delivery vehicle. This allowed the Product team to update 'upsell' content and run A/B tests instantly without waiting for code deployments."
+
+problem: "Our Jenkins CI/CD pipeline was a massive bottleneck; a single UI change required a multi-stage gauntlet of unit tests, E2E tests, and security scans that could take days to clear. This made it impossible for the Product team to iterate on high-traffic search results or react to market trends in real-time."
+
+constraints:
+  - "Backend API was not yet ready to return specialized marketing metadata."
+  - "Must maintain performance and light payload."
+  - "Required 100% WCAG accessibility compliance and custom analytics integration."
+  - "Solution needed to be a flexible 'shim' for future backend integration."
+
+approach: "Instead of hard-coding search result variations into the app, we built an Angular service that acted as a matching engine. This service fetched a remote JSON file from the CDN on initialization. When a user performed a search, the engine performed a direct match between the query and the JSON keys to determine which high-impact components (FAQs, CTA banners, or products) to render. I developed the initial POC and established the service architecture, then led a small team to build out the modular component library."
+
+keyDecisions:
+  - decision: "Leverage Bloomreach WCM for JSON-as-a-Service"
+    reasoning: "By hosting the 'Rules Engine' in the CMS, we bypassed the Jenkins pipeline entirely. Content editors could update search mappings and deploy to the CDN in minutes, providing total business autonomy."
+  - decision: "Architected a Flexible Data Interface"
+    reasoning: "Since the API roadmap was still in flux, I designed the frontend service to consume a normalized JSON structure. This acted as a 'shim,' allowing us to deliver business value immediately. I prioritized making the matching logic modular so that when the API eventually came online, we would only need to update the data-fetcher service rather than the entire component architecture."
+  - decision: "Parallelized Development Lifecycle"
+    reasoning: "After establishing the core service pattern and accessibility standards, I broke the project into modular tasks, allowing the team to build components and tracking services simultaneously to meet the 8-week launch window."
+  - decision: "Conditional Asset Loading"
+    reasoning: "To protect page performance, I ensured that 'upsell' assets (images/icons) only triggered loading after a successful query match was confirmed by the service."
+
+techStack:
+  - "Angular & TypeScript"
+  - "Decoupled Architecture"
+  - "Bloomreach WCM"
+  - "System Design"
+  - "Custom Analytics Integration"
+
+impact:
+  metrics:
+    - label: "Time-to-Market"
+      value: "Reduced from 48 hours to minutes"
+    - label: "Product Autonomy"
+      value: "100% (No engineering required for content updates)"
+    - label: "Business Impact"
+      value: "Significant lift in NABs through rapid A/B testing"
+  qualitative: "This architecture bridged the gap between a lagging API roadmap and an urgent business need. By building a stable frontend interface for our JSON 'stub,' we decoupled the UI development from the backend's timeline. This allowed us to launch a high-impact feature months early, with the understanding that the system was built to be easily integrated with a live API once the backend schema was finalized."
+
+learnings:
+  - "Engineered a way to resolve cross-team dependencies (API/CMS/Design) to clear a technical bottleneck."
+  - "Demonstrated how a POC can establish standards that allow a small team to work effectively in parallel."
+  - "Solved for the immediate deployment friction while keeping long-term maintenance in mind."
+
+featured: true
+status: completed
+order: 1
+---
+
+![Search Results - Credit Card Upsell](../../assets/case-studies/search-case-study-card.png)
+*Search results showing the dynamic product upsell.*
+
+
+
+### The Impact
+
+By moving the search criteria into the CMS as a CDN-hosted JSON file, we decoupled the search data from the application code. This allowed the front-end and search query service to perform real-time comparisons against live data, giving the Product team the ability to update additional search results content in minutes. This bypassed the days-long deployment cycle, enabled real-time A/B testing, and ultimately helped us launch the feature ahead of schedule.
+
+
