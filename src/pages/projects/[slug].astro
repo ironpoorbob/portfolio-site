@@ -335,10 +335,16 @@ const readingTime = formatReadingTime(calculateReadingTime(allText));
       font-size: 0.9375rem;
       color: var(--color-text-secondary);
       margin-bottom: 1.5rem;
+      @media (max-width: 700px) {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+      }
     }
 
     .meta-separator {
       opacity: 0.5;
+      @media (max-width: 700px) { display: none; }
     }
 
     .outcome-summary {
