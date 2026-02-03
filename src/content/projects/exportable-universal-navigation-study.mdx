@@ -1,0 +1,50 @@
+---
+title: "Strategic Architecture for Discover Migration"
+role: "Tech Lead/Systems Strategist"
+year: 2025
+duration: "3 Months"
+teamSize: "Cross-functional (COF Platform & DFS Legacy Teams)" 
+
+outcomeSummary: "Unified the user experience across legacy DFS and new COF tech stacks by architecting exportable component for site navigation, eliminating redundant development workstreams."
+
+overview: "When Capital One acquired Discover (DFS), the immediate challenge was technical fragmentation. I identified a path to unify the user experience without doubling the engineering effort. By leveraging existing 'exportable' component capabilities, I bridged the gap between the DFS legacy Adobe stack and our modern Capital One/Sequoia monorepo." 
+
+problem: "Engineering roadmaps initially called for two parallel, identical navigation workstreams. The DFS and COF teams were preparing to build identical navigation and search components for both legacy DFS pages and new COF-integrated pages. This approach would have guaranteed technical debt, design drift, and wasted resources."
+
+constraints:
+  - "Must run in a non-Angular environment (Adobe Experience Manager)."
+  - "Needs to receive real-time content updates to ensure a unified experience."
+  - "Must maintain high performance and SEO parity across different domains."
+
+approach: "I advocated for a 'fill the seam' strategy. By utilizing existing platform capabilities to export a DFS Universal Navigation component as standalone JS/CSS assets, we treated the header as a shared service that could be injected into any environment, regardless of the underlying stack."
+
+keyDecisions:
+  - decision: "Leveraging Existing Export Patterns" 
+    reasoning: "Instead of building a standalone navigation header for the DFS stack, I proposed using the 'exportable' method we already utilized for other third-party integrations. This allowed us to deliver a modern, Sequoia-compliant header to the legacy Adobe stack with minimal friction."
+  - decision: "Maximizing Engineering Velocity" 
+    reasoning: "By eliminating the need for a separate DFS header build, we removed a major bottleneck. This strategy directly freed up the DFS developers to focus on the high-priority data and backend migrations required for the merger."
+
+techStack:
+  - "Angular (Sequoia Monorepo)"
+  - "TypeScript"
+  - "Micro-frontend Injection"
+  - "CDN Asset Delivery"
+
+impact:
+  qualitative: "Successfully prevented a fragmented user experience during the merger and redirected engineering efforts toward more complex integration challenges."
+
+learnings:
+  - "Leveraging existing architectural patterns (component exportability) can solve complex integration challenges faster than building from scratch."
+  - "A successful migration strategy identifies efficiencies that free up engineering teams to focus on high-impact, mission-critical tasks."
+  - "Cross-team communication is essential to prevent parallel workstreams and redundant development cycles."
+
+featured: true
+status: completed
+order: 1
+---
+
+### The Impact
+
+This decision was about operational efficiency. By recognizing that we could leverage a technique already in our toolkit, we saved months of duplicate work.
+
+The real win wasn't just the code—it was the time we gained. Because the header was handled as a single source of truth, the DFS team could reallocate their resources to more complex areas of the migration, like the site-wide search and product review integrations. It ensured that the merger moved forward on a unified front without wasting effort on redundant UI components.

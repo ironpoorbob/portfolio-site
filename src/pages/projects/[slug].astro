@@ -154,21 +154,17 @@ const readingTime = formatReadingTime(calculateReadingTime(allText));
       <h1>{title}</h1>
       <div class="case-study-meta">
         <span class="meta-item">{role}</span>
-        <span class="meta-separator">·</span>
         <span class="meta-item">{year}</span>
         {duration && (
           <>
-            <span class="meta-separator">·</span>
             <span class="meta-item">{duration}</span>
           </>
         )}
         {teamSize && (
           <>
-            <span class="meta-separator">·</span>
             <span class="meta-item">{teamSize}</span>
           </>
         )}
-        <span class="meta-separator">·</span>
         <span class="meta-item">{readingTime}</span>
       </div>
       <p class="outcome-summary">{outcomeSummary}</p>
@@ -335,16 +331,9 @@ const readingTime = formatReadingTime(calculateReadingTime(allText));
       font-size: 0.9375rem;
       color: var(--color-text-secondary);
       margin-bottom: 1.5rem;
-      @media (max-width: 700px) {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 4px;
-      }
-    }
-
-    .meta-separator {
-      opacity: 0.5;
-      @media (max-width: 700px) { display: none; }
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .outcome-summary {
