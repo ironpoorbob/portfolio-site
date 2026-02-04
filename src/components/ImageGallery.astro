@@ -1,0 +1,201 @@
+---
+/**
+ * ImageGallery Component
+ *
+ * Reusable thumbnail grid + lightbox viewer for any page or MDX content.
+ * No carousel behavior; selecting thumbnails swaps the main image.
+ */
+
+interface GalleryImage {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+interface Props {
+  images: GalleryImage[];
+  id?: string;
+}
+
+const { images, id } = Astro.props;
+const galleryId = id ?? `image-gallery-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div class="image-gallery" data-gallery-id={galleryId}>
+  <div class="image-gallery-grid" role="list">
+    {images.map((image, index) => (
+      <button
+        type="button"
+        class="image-gallery-thumb"
+        data-gallery-thumb
+        data-index={index}
+        data-caption={image.caption ?? ''}
+        aria-label={`Open image ${index + 1} ${image.caption ? `: ${image.caption}` : ''}`}
+      >
+        <img src={image.src} alt={image.alt} loading="lazy" />
+      </button>
+    ))}
+  </div>
+
+  <div
+    class="image-gallery-lightbox"
+    role="dialog"
+    aria-modal="true"
+    // aria-hidden="true"
+    aria-label="Image viewer"
+  >
+    <div class="image-gallery-lightbox-content" role="document">
+      <button type="button" class="image-gallery-close" aria-label="Close image viewer">
+        ×
+      </button>
+      <figure class="image-gallery-figure">
+        <img class="image-gallery-full" src="" alt="" />
+        <figcaption class="image-gallery-caption"></figcaption>
+      </figure>
+      <div class="image-gallery-lightbox-thumbs" role="list">
+        {images.map((image, index) => (
+          <button
+            type="button"
+            class="image-gallery-thumb"
+            data-gallery-lightbox-thumb
+            data-index={index}
+            data-caption={image.caption ?? ''}
+            aria-label={`View image ${index + 1} ${image.caption ? `: ${image.caption}` : ''}`}
+          >
+            <img src={image.src} alt={image.alt} loading="lazy" />
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  
+  (() => {
+    const gallery = document.querySelector('[data-gallery-id*="image-gallery"]');
+    if (!gallery) return;
+
+    const thumbButtons = gallery.querySelectorAll('[data-gallery-thumb]');
+    const lightboxThumbButtons = gallery.querySelectorAll('[data-gallery-lightbox-thumb]');
+    const lightbox = gallery.querySelector('.image-gallery-lightbox');
+    const lightboxContent = gallery.querySelector('.image-gallery-lightbox-content');
+    const lightboxImage = gallery.querySelector('.image-gallery-full');
+    const lightboxCaption = gallery.querySelector('.image-gallery-caption');
+    const closeButton = gallery.querySelector('.image-gallery-close');
+
+    if (!lightbox || !lightboxContent || !lightboxImage || !lightboxCaption || !closeButton) return;
+
+    let lastFocused = null;
+    let previousBodyOverflow = '';
+
+    const images = Array.from(thumbButtons).map((button) => {
+      const img = button.querySelector('img');
+      return {
+        src: img ? img.getAttribute('src') : '',
+        alt: img ? img.getAttribute('alt') : '',
+        caption: button.getAttribute('data-caption') || '',
+      };
+    });
+
+    const setActive = (index) => {
+      const image = images[index];
+      if (!image) return;
+
+      lightboxImage.setAttribute('src', image.src || '');
+      lightboxImage.setAttribute('alt', image.alt || '');
+
+      if (image.caption) {
+        lightboxCaption.textContent = image.caption;
+        lightboxCaption.classList.remove('is-hidden');
+      } else {
+        lightboxCaption.textContent = '';
+        lightboxCaption.classList.add('is-hidden');
+      }
+
+      // disables thumbs from article body
+      thumbButtons.forEach((button) => button.classList.remove('is-active'));
+      // disables thumbs from lightbox
+      lightboxThumbButtons.forEach((button) => button.classList.remove('is-active'));
+      // enables active thumb in both places
+      const activeThumb = gallery.querySelector(`[data-gallery-thumb][data-index="${index}"]`);
+      const activeLightboxThumb = gallery.querySelector(
+        `[data-gallery-lightbox-thumb][data-index="${index}"]`
+      );
+      if (activeThumb) activeThumb.classList.add('is-active');
+      if (activeLightboxThumb) activeLightboxThumb.classList.add('is-active');
+    };
+
+    const openLightbox = (index) => {
+      lastFocused = document.activeElement;
+      setActive(index);
+      lightbox.style.removeProperty('display');
+      lightbox.classList.add('is-open');
+        
+      previousBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      closeButton.focus();
+    };
+
+    const closeLightbox = () => {
+      lightbox.classList.remove('is-open');
+      lightbox.style.setProperty('display', 'none');
+      document.body.style.overflow = previousBodyOverflow;
+      document.body.focus();
+      if (lastFocused && typeof lastFocused.focus === 'function') {
+        lastFocused.focus();
+      }
+    };
+
+    const handleThumbClick = (event) => {
+      const button = event.currentTarget;
+      const index = Number(button.getAttribute('data-index'));
+      openLightbox(index);
+    };
+
+    const handleLightboxThumbClick = (event) => {
+      const button = event.currentTarget;
+      const index = Number(button.getAttribute('data-index'));
+      setActive(index);
+    };
+
+    const handleKeydown = (event) => {
+      if (!lightbox.classList.contains('is-open')) return;
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeLightbox();
+        return;
+      }
+
+      if (event.key === 'Tab') {
+        const focusable = lightbox.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (!first || !last) return;
+
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    thumbButtons.forEach((button) => button.addEventListener('click', handleThumbClick));
+    lightboxThumbButtons.forEach((button) =>
+      button.addEventListener('click', handleLightboxThumbClick)
+    );
+    closeButton.addEventListener('click', closeLightbox);
+    closeButton.blur();
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', handleKeydown);
+  })();
+</script>
