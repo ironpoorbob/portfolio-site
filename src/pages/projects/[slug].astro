@@ -39,6 +39,7 @@ import ScrollToTop from '../../components/ScrollToTop.astro';
 import BackLink from '../../components/BackLink.astro';
 import RelatedContent from '../../components/RelatedContent.astro';
 import ImpactMetrics from '../../components/ImpactMetrics.astro';
+import ImageGallery from '../../components/ImageGallery.astro';
 import { getCollection, getEntry, render } from 'astro:content';
 import { calculateReadingTime, formatReadingTime } from '../../utils/readingTime';
 
@@ -92,6 +93,7 @@ const {
   relatedProjects,
   relatedDecisions,
   status,
+  images,
 } = project.data;
 
 // Status display configuration
@@ -175,6 +177,13 @@ const readingTime = formatReadingTime(calculateReadingTime(allText));
       <h2>Overview</h2>
       <p>{overview}</p>
     </section>
+
+    {images && images.length > 0 && (
+      <section class="case-study-section">
+        <h2>Gallery</h2>
+        <ImageGallery images={images} />
+      </section>
+    )}
 
     <!-- Problem Section -->
     <section class="case-study-section">

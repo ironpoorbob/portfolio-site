@@ -107,6 +107,13 @@ const projectsCollection = defineCollection({
     
     /** Related decision slugs for cross-referencing */
     relatedDecisions: z.array(z.string()).optional(),
+
+    /** Optional image gallery for the case study */
+    images: z.array(z.object({
+      src: z.string(),
+      alt: z.string(),
+      caption: z.string().optional(),
+    })).optional(),
   }).passthrough(), // Allows extra fields not defined in schema
 });
 
