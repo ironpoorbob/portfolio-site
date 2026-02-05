@@ -129,7 +129,7 @@ const galleryId = id ?? `image-gallery-${Math.random().toString(36).slice(2, 9)}
     const openLightbox = (index) => {
       lastFocused = document.activeElement;
       setActive(index);
-      lightbox.style.removeProperty('display');
+      lightbox.style.setProperty('display', 'flex');
       lightbox.classList.add('is-open');
         
       previousBodyOverflow = document.body.style.overflow;
