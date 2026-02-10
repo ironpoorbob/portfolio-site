@@ -1,0 +1,56 @@
+---
+title: "Platform Pipeline Integrity: Protecting the Core Web Experience"
+role: "Technical Lead / Reliability Engineer"
+year: 2025
+duration: "2 Months"
+teamSize: "Cross-functional (Proxy, VPN, & BrowserStack Teams)"
+
+outcomeSummary: "Restored mission-critical testing infrastructure for the Capital One main web platform (www.capitalone.com) following a global VPN reconfiguration/update, ensuring deployment integrity for the site's most high-traffic assets."
+
+overview: "When a global VPN update greatly impaired connectivity to our cross-browser testing suite (BrowserStack), it prevented developers from being able to effectively test and validate updates on the list of supported browsers and devices. I led the technical investigation to bridge the gap between our web teams and Network Security, restoring the ability to test new features and safely release to production."
+
+problem: "A company-wide VPN policy update introduced silent failures in our BrowserStack integration. Due to traffic, connectivity, and security restraints, testing became unusable, creating a massive bottleneck across multiple teams. Without the ability to validate changes across all supported devices, we faced a high risk of production failures that could lead to significant revenue loss."
+
+keyDecisions:
+  - decision: "Collaborative/Cross-Departmental Debugging"
+    reasoning: "I facilitated debugging sessions between our internal Proxy/VPN teams and the BrowserStack support engineers. By providing real-time feedback on how the connectivity was failing on the homepage components, we were able to pinpoint the internal configuration changes causing the lag."
+  - decision: "Transition to Proactive Monitoring"
+    reasoning: "After the connection was broken a second time by a follow-up update, I realized we needed a better feedback loop. I began developing a Jenkins-based 'Connectivity Watchdog.' The goal was to run a silent check several times a day and automatically ping a shared Slack channel if the proxy was impairing our traffic, allowing the network teams to respond before developers even noticed a slowdown."
+
+
+impact:
+  metrics:
+    - label: "Testing Coverage"
+      value: "Restored full manual validation for business-critical components like UNav and Sign-In"
+    - label: "Organizational Awareness"
+      value: "Conducted demos to highlight BrowserStack capabilities and encourage adoption across teams"
+    - label: "Operational Reliability"
+      value: "Designed a Slack-integrated watchdog to identify network failures before they impacted development"
+  qualitative: "By taking ownership of the infrastructure failure, I was able to turn a frustrating technical bottleneck into an opportunity for team growth. Restoring the VPN/Proxy connectivity with BrowserStack ensured we didn't have to compromise on our quality standards for the site's most important assets, while the new monitoring approach gave the team more confidence in their tools."
+
+learnings:
+  - "Technical leadership in a large enterprise requires the ability to navigate siloed departments—bridging the gap between Web, Network, and Security teams to resolve complex infrastructure bottlenecks."
+  - "Moving from a reactive to a proactive mindset allowed us to build simple monitoring checks that catch infrastructure issues before they impact the development cycle."
+
+constraints:
+  - "Must maintain strict Enterprise Security and VPN protocols."
+  - "Requires coordination across multiple siloed teams (Proxy, VPN, and Vendor)."
+  - "Need to maintain high visual and functional standards for all enterprise components across all supported devices, specifically business critical elements like the Universal Navigation."
+
+approach: "I acted as the technical point of contact for the web platform team, documenting the specific ways the VPN update was interfering with our testing traffic. I brought those findings to the Network Security and BrowserStack teams to coordinate a fix. To prevent future outages from stalling the team, I began building a Jenkins-based 'Connectivity Watchdog' designed to automatically alert the VPN/Proxy team if the proxy settings changed, ensuring we caught infrastructure issues before they impacted a manual testing session."
+
+techStack:
+  - "BrowserStack (Local Testing)"
+  - "GlobalProtect VPN / Proxy Infrastructure"
+  - "Jenkins (CI/CD / Cron)"
+
+featured: true
+status: completed
+order: 2
+---
+
+### The Impact
+
+This project was about setting a standard. The components our team maintained (Universal Navigation, Sign-In) are high-risk and require deep cross-device validation on all the supported browsers.
+
+By leading the fix and then presenting the functionality to other teams, I worked to make BrowserStack a more accessible and reliable tool for the broader organization. The goal was to move from a reactive "fix it when it's broken" mindset to a proactive culture of quality, ensuring our site's most critical features worked perfectly for every customer, regardless of their device or browser.
