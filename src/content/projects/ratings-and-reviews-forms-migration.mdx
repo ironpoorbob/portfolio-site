@@ -1,0 +1,55 @@
+---
+title: "Ratings & Reviews Forms Migration"
+role: "Technical Lead"
+year: 2025
+duration: "3 Months"
+teamSize: "3 Devs (Lead + 2)"
+
+outcomeSummary: "Led the migration of the Ratings & Reviews form ecosystem from a costly vendor-hosted model to a custom-built, CMS-driven solution. By implementing a data abstraction layer and hybrid assembly model, we reclaimed control over the UI, reduced deployment overhead, and created a strategic path to swap backend providers with minimal code refactoring."
+
+overview: "When a primary vendor’s proprietary hosting became a significant cost and flexibility bottleneck, I led the technical effort to rebuild the Ratings & Reviews form experience from the ground up. The goal was to move away from vendor-managed forms by establishing a proprietary, in-house architecture within our Sequoia Angular monorepo. This required building a system capable of orchestrating inconsistent schema data from a third-party API and merging it at runtime with Bloomreach CMS configurations and CDN-hosted JSON patches to render a seamless, high-performance customer experience."
+
+problem: "Our Ratings & Reviews (RnR) forms relied on a third-party hosted system (Bazaarvoice) that was becoming increasingly expensive compared to competitors. Beyond the financial overhead, the proprietary nature of the hosted service offered very little flexibility for custom branding or layout variations. From a technical perspective, the vendor’s API provided incomplete schema data, lacked defined form-field ordering, and was missing critical form element meta info. This created challenges that prevented us from delivering a high-quality, branded form experience without a custom architectural buffer to manage and 'fix' the vendor data during the assembly process."
+
+constraints:
+  - "Inconsistent Data Source: The vendor API provided incomplete field metadata and lacked the hierarchy and ordering required for a functional UI."
+  - "Hybrid Environment: The solution had to support our static-page deployment model while facilitating dynamic, runtime API calls for form assembly."
+  - "Vendor Agnosticism: The architecture had to be built so that any future vendor change would require minimal refactoring of the core Angular components"
+
+approach: "I designed a three-tier data orchestration strategy to assemble the forms at runtime. First, the WCM (CMS) provided the base layout and product-specific metadata. Second, our data abstraction layer fetched the raw field schema from the vendor API. Finally, a CDN-hosted 'patch' JSON was used to fill in missing helper text, labels, and the correct field order. By merging these sources in the browser, we were able to render complex, secure forms that felt native to our site while remaining technically decoupled from the vendor's backend."
+
+keyDecisions:
+  - decision: "The Data Abstraction Layer"
+    reasoning: "Due to the high probability of a future vendor change, we implemented a data abstraction layer to decouple our UI from the backend source. This service acted as a critical buffer, merging the incomplete form schema from the vendor with our own CDN-hosted 'patch' JSON. This patch allowed us to dictate field order and fill in missing metadata at runtime. By abstracting the data this way, we ensured that future vendor swaps or API changes would only require a schema update in the data layer rather than a complex refactor of the core Angular components."
+  - decision: "Hybrid Dynamic Assembly"
+    reasoning: "To support the marketing team’s need for flexibility, I architected a hybrid assembly model. While the site publishes static pages to the CDN—containing the basic layout configuration, product assets, and instructional copy—the form component remains unrendered until runtime. Once the page loads, the component calls the vendor API with a specific product code to fetch the base schema. This schema, merged with our CDN-hosted ordering JSON and CMS layout data, allows for the rendering of four distinct forms and endless product variations without requiring new code deployments or build cycles."
+
+
+techStack:
+  - "WCM/CMS (Bloomreach)"
+  - "CDN-hosted JSON (Schema Patching)"
+  - "Bazaarvoice Form API"
+  - "Angular/TypeScript"
+
+impact:
+  metrics:
+    - label: "Strategic Agility"
+      value: "Achieved a vendor-agnostic architecture, removing lock-in from high-cost providers"
+    - label: "Deployment Efficiency"
+      value: "Enabled multiple layout and product form variations via CMS without code releases"
+    - label: "Data Integrity"
+      value: "Patched 100% of incomplete vendor schema data using a custom CDN-hosted JSON layer"
+  qualitative: "This project transformed a rigid, third-party dependency into a flexible internal asset. By prioritizing a decoupled architecture, we empowered our marketing and content teams to manage complex forms independently while insulating the platform from future vendor-side shifts."
+
+learnings:
+  - "Defensive Architecture is Essential: When a third-party vendor is a 'black box,' building an abstraction layer is the only way to ensure project stability and maintain control over the user experience."
+  - "Managing Multi-Source State: I gained deep experience in orchestrating asynchronous data from three different sources (API, CMS, and CDN). Ensuring the form didn't render until all pieces were correctly 'stitched' together was key to avoiding layout shift and a poor user experience."
+
+featured: false
+status: completed
+order: 4
+---
+
+### The Impact
+
+By reclaiming ownership of the form logic, we transformed a rigid third-party dependency into a flexible internal asset. This architectural shift gave our marketing and content teams the power to launch and iterate on customer feedback forms independently, while providing the organization with the leverage to switch backend providers in the future with no impact on the frontend.
